@@ -1,0 +1,141 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: blueprints.cloud.google.com/v1alpha1
+kind: BlueprintMetadata
+metadata:
+  name: terraform-google-gsuite-export
+  annotations:
+    config.kubernetes.io/local-config: "true"
+spec:
+  info:
+    title: Terraform GSuite Export Module
+    source:
+      repo: https://github.com/keshavmittalgoogle/terraform-google-gsuite-export
+      sourceType: git
+    version: 2.1.0
+    actuationTool:
+      flavor: Terraform
+      version: ">= 0.13"
+    description: {}
+  content:
+    examples:
+      - name: bigquery
+        location: examples/bigquery
+      - name: cloud_function
+        location: examples/cloud_function
+      - name: pubsub
+        location: examples/pubsub
+      - name: stackdriver
+        location: examples/stackdriver
+      - name: storage
+        location: examples/storage
+  interfaces:
+    variables:
+      - name: admin_user
+        description: The GSuite Admin user to impersonate
+        varType: string
+        required: true
+      - name: api
+        description: The Admin SDK API to sync data from
+        varType: string
+        defaultValue: reports_v1
+      - name: applications
+        description: The Admin SDK applications to sync data from
+        varType: list(string)
+        defaultValue:
+          - admin
+          - login
+          - drive
+          - mobile
+          - token
+      - name: frequency
+        description: The crontab entry that controls the sync frequency
+        varType: string
+        defaultValue: "*/10 * * * *"
+      - name: service_account_email
+        description: "The service account email to use for exporting GSuite data. This service account must have domain-wide delegation and the following roles: roles/iam.serviceAccountTokenCreator, roles/logging.logWriter, roles/logging.viewer."
+        varType: string
+        required: true
+      - name: project_id
+        description: The project to export GSuite data to.
+        varType: string
+        required: true
+      - name: export_filter
+        description: The export filter to use in a log export (if any)
+        varType: string
+        defaultValue: ""
+      - name: gsuite_exporter_version
+        description: Version of the gsuite-exporter PyPi package
+        varType: string
+        defaultValue: 0.0.4
+      - name: machine_zone
+        description: The instance zone
+        varType: string
+        defaultValue: us-central1-a
+      - name: machine_project
+        description: The instance project id. Defaults to `project_id`
+        varType: string
+        defaultValue: ""
+      - name: machine_type
+        description: The instance type
+        varType: string
+        defaultValue: f1-micro
+      - name: machine_name
+        description: The instance name
+        varType: string
+        defaultValue: gsuite-exporter
+      - name: machine_image
+        description: The instance image
+        varType: string
+        defaultValue: debian-cloud/debian-11
+      - name: machine_network
+        description: The instance network
+        varType: string
+        defaultValue: default
+    outputs:
+      - name: filter
+        description: Log export filter for logs exported by GSuite-exporter
+      - name: instance_name
+        description: GSuite Exporter instance name
+      - name: instance_project
+        description: GSuite Exporter instance project
+      - name: instance_zone
+        description: GSuite Exporter instance zone
+  requirements:
+    roles:
+      - level: Project
+        roles:
+          - roles/owner
+          - roles/iam.serviceAccountTokenCreator
+          - roles/logging.logWriter
+          - roles/logging.viewer
+    services:
+      - serviceusage.googleapis.com
+      - cloudresourcemanager.googleapis.com
+      - logging.googleapis.com
+      - monitoring.googleapis.com
+      - bigquery.googleapis.com
+      - pubsub.googleapis.com
+      - storage-component.googleapis.com
+      - storage.googleapis.com
+      - admin.googleapis.com
+      - iam.googleapis.com
+    providerVersions:
+      - source: hashicorp/external
+        version: ">= 1.1.0"
+      - source: hashicorp/google
+        version: ">= 3.53, < 7"
+      - source: hashicorp/template
+        version: ">= 2.1.0"

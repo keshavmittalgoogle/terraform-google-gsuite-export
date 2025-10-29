@@ -40,8 +40,8 @@ variable "frequency" {
   default     = "*/10 * * * *"
 }
 
-variable "service_account" {
-  description = "The service account for exporting GSuite data. Needs domain-wide delegation and correct access scopes."
+variable "service_account_email" {
+  description = "The service account email to use for exporting GSuite data. This service account must have domain-wide delegation and the following roles: roles/iam.serviceAccountTokenCreator, roles/logging.logWriter, roles/logging.viewer."
   type        = string
 }
 
