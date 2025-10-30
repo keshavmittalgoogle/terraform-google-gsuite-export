@@ -15,6 +15,7 @@
  */
 
 locals {
+  computed_filter = join(" OR ", [for app in var.applications : format("logName:projects/%s/logs/%s", var.project_id, app)])
   export_filter   = var.export_filter != "" ? var.export_filter : data.external.compute_filter.result.filter
   machine_project = var.machine_project != "" ? var.machine_project : var.project_id
 }
@@ -22,14 +23,6 @@ locals {
 #------#
 # Data #
 #------#
-data "external" "compute_filter" {
-  program = [
-    "python3",
-    "${path.module}/scripts/get_logsink_filter.py",
-    var.project_id,
-    join(" ", var.applications)
-  ]
-}
 
 data "template_file" "gsuite_exporter" {
   template = file("${path.module}/scripts/gsuite_exporter.sh.tpl")
