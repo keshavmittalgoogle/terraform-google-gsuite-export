@@ -16,7 +16,7 @@
 
 locals {
   computed_filter = join(" OR ", [for app in var.applications : format("logName:projects/%s/logs/%s", var.project_id, app)])
-  export_filter   = var.export_filter != "" ? var.export_filter : data.external.compute_filter.result.filter
+  export_filter   = var.export_filter != "" ? var.export_filter : local.computed_filter
   machine_project = var.machine_project != "" ? var.machine_project : var.project_id
 }
 
