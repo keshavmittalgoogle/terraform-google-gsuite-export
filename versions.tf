@@ -15,12 +15,11 @@
  */
 
 terraform {
-  required_version = ">= 0.13"
+  required_version = ">= 1.3"
   required_providers {
-
     google = {
       source  = "hashicorp/google"
-      version = ">= 3.53, < 7"
+      version = ">= 4.51, < 6"
     }
     external = {
       source  = "hashicorp/external"
@@ -31,9 +30,4 @@ terraform {
       version = ">= 2.1.0"
     }
   }
-
-  provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-gsuite-export/v2.1.0"
-  }
-
 }
