@@ -45,6 +45,24 @@ spec:
         gsuite_exporter_version:
           name: gsuite_exporter_version
           title: Gsuite Exporter Version
+        instance_image:
+          name: instance_image
+          title: Instance Image
+        instance_name:
+          name: instance_name
+          title: Instance Name
+        instance_network:
+          name: instance_network
+          title: Instance Network
+        instance_project:
+          name: instance_project
+          title: Instance Project
+        instance_type:
+          name: instance_type
+          title: Instance Type
+        labels:
+          name: labels
+          title: Labels
         machine_image:
           name: machine_image
           title: Machine Image
@@ -66,6 +84,12 @@ spec:
         project_id:
           name: project_id
           title: Project Id
+        region:
+          name: region
+          title: Region
         service_account_email:
           name: service_account_email
           title: Service Account Email
+        zone:
+          name: zone
+          title: Zone

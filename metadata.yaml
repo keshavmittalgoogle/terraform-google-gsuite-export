@@ -27,7 +27,7 @@ spec:
     version: 2.1.0
     actuationTool:
       flavor: Terraform
-      version: ">= 0.13"
+      version: ">= 1.3"
     description: {}
   content:
     examples:
@@ -80,30 +80,37 @@ spec:
         description: Version of the gsuite-exporter PyPi package
         varType: string
         defaultValue: 0.0.4
-      - name: machine_zone
-        description: The instance zone
+      - name: region
+        description: The region to create the instance in.
         varType: string
-        defaultValue: us-central1-a
-      - name: machine_project
+        defaultValue: us-central1
+      - name: zone
+        description: The zone to create the instance in. If not set, a random zone in the specified region will be used.
+        varType: string
+      - name: instance_project
         description: The instance project id. Defaults to `project_id`
         varType: string
         defaultValue: ""
-      - name: machine_type
+      - name: instance_type
         description: The instance type
         varType: string
         defaultValue: f1-micro
-      - name: machine_name
+      - name: instance_name
         description: The instance name
         varType: string
         defaultValue: gsuite-exporter
-      - name: machine_image
+      - name: instance_image
         description: The instance image
         varType: string
         defaultValue: debian-cloud/debian-11
-      - name: machine_network
+      - name: instance_network
         description: The instance network
         varType: string
         defaultValue: default
+      - name: labels
+        description: The labels to apply to the instance.
+        varType: map(string)
+        defaultValue: {}
     outputs:
       - name: filter
         description: Log export filter for logs exported by GSuite-exporter
@@ -136,6 +143,6 @@ spec:
       - source: hashicorp/external
         version: ">= 1.1.0"
       - source: hashicorp/google
-        version: ">= 3.53, < 7"
+        version: ">= 4.51, < 6"
       - source: hashicorp/template
         version: ">= 2.1.0"

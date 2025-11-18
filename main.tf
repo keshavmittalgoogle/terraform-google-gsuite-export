@@ -39,13 +39,18 @@ data "template_file" "gsuite_exporter" {
   }
 }
 
+data "google_compute_zones" "available" {
+  project = var.project_id
+  region  = var.region
+}
+
 #--------------------#
 # GSuite Exporter VM #
 #--------------------#
 resource "google_compute_instance" "gsuite_exporter_vm" {
   name                      = var.instance_name
   machine_type              = var.instance_type
-  zone                      = var.zone
+  zone                      = var.zone == null ? data.google_compute_zones.available.names[0] : var.zone
   project                   = local.instance_project
   allow_stopping_for_update = true
   labels                    = var.labels

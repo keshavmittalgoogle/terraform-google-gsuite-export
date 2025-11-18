@@ -1,4 +1,4 @@
-test git# Terraform GSuite Export Module
+# Terraform GSuite Export Module
 
 The module will create a compute engine VM instance and set up a cronjob to export
 GSuite Admin SDK data to **Stackdriver Logging** on a schedule.
@@ -22,9 +22,10 @@ intended for Terraform 0.12.x is [v1.0.0](https://registry.terraform.io/modules/
 | instance\_project | GSuite Exporter instance project |
 | instance\_zone | GSuite Exporter instance zone |
 
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
-## Requirements
+[gsuite-exporter-site]: https://github.com/GoogleCloudPlatform/professional-services/tree/master/tools/gsuite-exporter
+
+<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ### Terraform plugins
 - [Terraform](https://www.terraform.io/downloads.html) >= 0.13.0
 - [terraform-provider-google](https://github.com/terraform-providers/terraform-provider-google) plugin v1.8.0
