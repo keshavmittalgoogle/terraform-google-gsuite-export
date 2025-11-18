@@ -17,9 +17,9 @@
 provider "google" {}
 
 locals {
-  computed_filter = join(" OR ", [for app in var.applications : format("logName:projects/%s/logs/%s", var.project_id, app)])
-  export_filter   = var.export_filter != "" ? var.export_filter : local.computed_filter
-  machine_project = var.machine_project != "" ? var.machine_project : var.project_id
+  computed_filter  = join(" OR ", [for app in var.applications : format("logName:projects/%s/logs/%s", var.project_id, app)])
+  export_filter    = var.export_filter != "" ? var.export_filter : local.computed_filter
+  instance_project = var.instance_project != "" ? var.instance_project : var.project_id
 }
 
 #------#
@@ -43,20 +43,21 @@ data "template_file" "gsuite_exporter" {
 # GSuite Exporter VM #
 #--------------------#
 resource "google_compute_instance" "gsuite_exporter_vm" {
-  name                      = var.machine_name
-  machine_type              = var.machine_type
-  zone                      = var.machine_zone
-  project                   = local.machine_project
+  name                      = var.instance_name
+  machine_type              = var.instance_type
+  zone                      = var.zone
+  project                   = local.instance_project
   allow_stopping_for_update = true
+  labels                    = var.labels
 
   boot_disk {
     initialize_params {
-      image = var.machine_image
+      image = var.instance_image
     }
   }
 
   network_interface {
-    network = var.machine_network
+    network = var.instance_network
     access_config {}
   }
 

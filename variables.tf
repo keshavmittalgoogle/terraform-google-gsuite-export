@@ -65,38 +65,50 @@ variable "gsuite_exporter_version" {
 #---------------------------#
 # VM exporter configuration #
 #---------------------------#
-variable "machine_zone" {
-  description = "The instance zone"
+variable "region" {
+  description = "The region to create the instance in."
   type        = string
-  default     = "us-central1-a"
+  default     = "us-central1"
 }
 
-variable "machine_project" {
+variable "zone" {
+  description = "The zone to create the instance in. If not set, a random zone in the specified region will be used."
+  type        = string
+  default     = null
+}
+
+variable "instance_project" {
   description = "The instance project id. Defaults to `project_id`"
   type        = string
   default     = ""
 }
 
-variable "machine_type" {
+variable "instance_type" {
   description = "The instance type"
   type        = string
   default     = "f1-micro"
 }
 
-variable "machine_name" {
+variable "instance_name" {
   description = "The instance name"
   type        = string
   default     = "gsuite-exporter"
 }
 
-variable "machine_image" {
+variable "instance_image" {
   description = "The instance image"
   type        = string
   default     = "debian-cloud/debian-11"
 }
 
-variable "machine_network" {
+variable "instance_network" {
   description = "The instance network"
   type        = string
   default     = "default"
+}
+
+variable "labels" {
+  description = "The labels to apply to the instance."
+  type        = map(string)
+  default     = {}
 }
